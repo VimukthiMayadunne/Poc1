@@ -132,8 +132,6 @@ app.post('/token',function(req,res){
        username: body1.username,
        password: body1.password,
        undefined: undefined } }
-    console.log(options)
-    console.log("...........................")
     request(options, function (error, response, body) {
         if (error)
             console.log(error)
