@@ -84,6 +84,19 @@ app.post('/addapi',function(req,res){
         });
 });
 
+app.post('/getdetails',function(req,res){
+    console.log("Details Requseted")
+    let  apidetails = req.body
+    console.log(apidetails)
+    Api.find({'host': apidetails.host}).exec((err, feed) => {
+        console.log(feed)
+        if (err)
+            console.log(err)
+        else
+            res.json(feed)
+    });
+});
+
 app.route('/getapi').get((req, res) => {
     Api.find((err, item) => {
         if (err)
@@ -113,7 +126,7 @@ app.post('/token',function(req,res){
     headers: 
      { 'Postman-Token': '14224842-9cbb-4917-9856-9da7dac4c0bb',
        'cache-control': 'no-cache',
-       Authorization: head.authorization },
+       Authorization: 'Basic ZjFVSmwzSmRBTEFtNXhLdEI5SUhLQkhDQmlrYTppZmhCdTE0SkkxdFdpckE0dU9fUEE0M0Y0V3Nh' },
     form: 
      { grant_type: "password",
        username: body1.username,
@@ -132,12 +145,13 @@ app.post('/token',function(req,res){
 
 app.post('/token1',function(req,res){
     var head=req.headers
+    var bodyc=req.body.cs
     var options = { method: 'POST',
     url: 'http://172.17.0.2:8280/token',
     headers: 
     { 'Postman-Token': '48f678cf-3db9-493d-9490-815de5c76882',
       'cache-control': 'no-cache',
-       Authorization: head.authorization },
+       Authorization: bodyc },
     form: { grant_type: 'client_credentials' } }
 
     request(options, function (error, response, body) {
