@@ -1,3 +1,4 @@
+var Base64 = require('js-base64').Base64;
 let express = require('express');
 var htmlToJson = require('./node_modules/html-to-json');
 let app = express(); 
@@ -51,6 +52,8 @@ app.post('/addbasic',function(req,res){
 });
 
 app.route('/getbasic').get((req, res) => {
+    var rslt=decode('f1UJl3JdALAm5xKtB9IHKBHCBika','ifhBu14JI1tWirA4uO_PA43F4Wsa')
+    console.log(rslt)
     Basic.find((err, item) => {
         if (err)
             console.log(err);
@@ -124,9 +127,10 @@ app.post('/token',function(req,res){
     var options = { method: 'POST',
     url: 'http://172.17.0.2:8280/token',
     headers: 
-     { 'Postman-Token': '14224842-9cbb-4917-9856-9da7dac4c0bb',
+     { //'Postman-Token': '14224842-9cbb-4917-9856-9da7dac4c0bb',
        'cache-control': 'no-cache',
-       Authorization: 'Basic ZjFVSmwzSmRBTEFtNXhLdEI5SUhLQkhDQmlrYTppZmhCdTE0SkkxdFdpckE0dU9fUEE0M0Y0V3Nh' },
+        Authorization: 'Basic ZjFVSmwzSmRBTEFtNXhLdEI5SUhLQkhDQmlrYTppZmhCdTE0SkkxdFdpckE0dU9fUEE0M0Y0V3Nh' },
+                            
     form: 
      { grant_type: "password",
        username: body1.username,
@@ -143,14 +147,16 @@ app.post('/token',function(req,res){
 
 app.post('/token1',function(req,res){
     var head=req.headers
-    var bodyc=req.body.cs
+    var str1=req.body.ck
+    var str2=req.body.cs
+    var str3=decode(str1,str2)
     var options = { method: 'POST',
     url: 'http://172.17.0.2:8280/token',
     headers: 
-    { 'Postman-Token': '48f678cf-3db9-493d-9490-815de5c76882',
+    { //'Postman-Token': '48f678cf-3db9-493d-9490-815de5c76882',
       'cache-control': 'no-cache',
-       Authorization: bodyc },
-    form: { grant_type: 'client_credentials' } }
+       Authorization: str3 },
+    form: { grant_type: "client_credentials" } }
 
     request(options, function (error, response, body) {
         if (error) 
@@ -163,3 +169,14 @@ app.post('/token1',function(req,res){
 app.listen(port, (req, res) => {
     console.log("Server started on port: " + port);
 });
+
+function decode(ck,cs){
+    console.log("Fcalled")
+    var str1 = ck;
+    var str2 = cs;
+    var str3 = str1+":"+str2;
+// Encode the String
+    var encodedString = Base64.encode(str3)
+    console.log(encodedString); // aGVsbG86d29ybGQhPyQqJigpJy09QH4=
+    return  "Basic "+encodedString;
+}
