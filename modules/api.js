@@ -16,27 +16,43 @@ let ApiSchema = new Schema({
             type: String,
         },
         tags: {
-            type: Object,
+            type: [Object],
         },
         schemes:{
             type: [String],
         },
         paths: {
             type: Object,
-        customAuth:{
-            name:String ,// "WSO2 APIM getway Acsess gearator"
-            grantType:String, // client_credentias
+        },
+        'x-customAuth': {
+            name:{
+                type:String
+            } ,// "WSO2 APIM getway Acsess gearator"
+            grantType:{
+                type:String
+            }, // client_credentias
             parameters:[{
-                name:String, // clientKey
-                in:String, // body
-                required:Boolean, //true
-                type:String // string
+                name:{
+                    type:String
+                }, // clientKey
+                in:{
+                    type:String
+                }, // body
+                required:{
+                    type:Boolean
+                }, //true
+                type:{
+                    type:String
+                }, 
             }],
-            url:String, //http://172.17.0.2:8280/token
-            description:String // "Genarates Accses token from client credentials to acsess data"
-      }
-    }
-});
+            url:{
+                type: String
+            }, //http://172.17.0.2:8280/token
+            description:{
+                type: String 
+            }// "Genarates Accses token from client credentials to acsess data"
+      },
+    });
 
 const Api =mongoose.model('api', ApiSchema);
 module.exports = Api;

@@ -73,7 +73,7 @@ app.route('/getbasic/:id').get((req, res) => {
 });
 // ----------------------------------------------------------Swagger  details ----------------------------------------------
 app.post('/addapi',function(req,res){
-    console.log(req.file)
+    //console.log(req.body)
     let  api = new Api(req.body);
     console.log("file details" ,api);
     api.save()
@@ -81,6 +81,7 @@ app.post('/addapi',function(req,res){
             res.status(200).json({'issue': 'Added successfully'});
         })
         .catch(err => {
+            console.log(err)
             res.status(400).send('Failed to create new record');
         });
 });
