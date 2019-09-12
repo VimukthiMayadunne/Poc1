@@ -1,6 +1,6 @@
 var Base64 = require('js-base64').Base64;
 let express = require('express');
-var htmlToJson = require('./node_modules/html-to-json');
+const fileUpload = require('express-fileupload');
 let app = express(); 
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
@@ -17,6 +17,7 @@ let conn = mongoose.connection;
 let port = 3000;
 const Basic=require('./modules/basic');
 const Api=require('./modules/api');
+const File=require('./modules/file');
 var request = require("request");
 // Setting up the root route
 app.get('/', (req, res) => {
@@ -34,7 +35,7 @@ app.use((req, res, next) => {
 
 // BodyParser middleware
 app.use(bodyParser.json());
-
+app.use(fileUpload())
 
 // ----------------------------------------------------------Basic API details ----------------------------------------------
 app.post('/addbasic',function(req,res){
@@ -70,14 +71,11 @@ app.route('/getbasic/:id').get((req, res) => {
             res.json(item);
     });
 });
-
-
-
 // ----------------------------------------------------------Swagger  details ----------------------------------------------
-
 app.post('/addapi',function(req,res){
+    console.log(req.file)
     let  api = new Api(req.body);
-    console.log(api);
+    console.log("file details" ,api);
     api.save()
         .then(issue => {
             res.status(200).json({'issue': 'Added successfully'});
@@ -86,7 +84,18 @@ app.post('/addapi',function(req,res){
             res.status(400).send('Failed to create new record');
         });
 });
-
+app.post('/addswg',function(req,res){
+    console.log(req.files)
+    let file =new File(req.files)
+    console.log(file)
+    file.save()
+    .then(issue => {
+        res.status(200).json({'issue': 'Added successfully'});
+    })
+    .catch(err => {
+        res.status(400).send('Failed to create new record');
+    });
+})
 app.post('/getdetails',function(req,res){
     console.log("Details Requseted")
     let  apidetails = req.body
@@ -97,6 +106,14 @@ app.post('/getdetails',function(req,res){
             console.log(err)
         else
             res.json(feed)
+    });
+});
+app.route('/getswg').get((req, res) => {
+    File.find((err, item) => {
+        if (err)
+            console.log(err);
+        else
+            res.json(item);
     });
 });
 
@@ -117,6 +134,33 @@ app.route('/getapi/:id').get((req, res) => {
             res.json(item);
     });
 });
+
+app.post('/up',function(req,res){
+    console.log(req.body)
+    console.log(req.body.files)
+    console.log(req.file.tFile)
+    console.log(req.files)
+    res.status(200).json("File Recived")
+})
+
+app.post('/upload', function(req, res) {
+    console.log("Files",req.files);
+    console.log("File:",req.file)
+    if (Object.keys(req.files).length == 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+
+    console.log(req.file)
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let sampleFile = req.files.tFile;
+  
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv('./somewhere/on/your/server/filename.json', function(err) {
+      if (err)
+        return res.status(500).send(err);
+      res.send('File uploaded!');
+    });
+  });
 
 // ----------------------------------------------------------Authentication   details ----------------------------------------------
 
