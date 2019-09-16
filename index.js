@@ -5,6 +5,8 @@ let app = express();
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 const config = require('./config/database');
+const path = require('path');
+app.use(express.static(path.join(__dirname,'public')));
 const connectDB = mongoose.connect(config.database, { useNewUrlParser: true },(err)=>{
     if(err){
       console.log('-------------------------------');  
@@ -37,6 +39,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(fileUpload())
 
+app.use('/token',require('./routes/token'));
 // ----------------------------------------------------------Basic API details ----------------------------------------------
 app.post('/addbasic',function(req,res){
     let  basic = new Basic(req.body);
@@ -100,9 +103,7 @@ app.post('/addswg',function(req,res){
 app.post('/getdetails',function(req,res){
     console.log("Details Requseted")
     let  apidetails = req.body
-    console.log(apidetails)
-    Api.find({'host': apidetails.host}).exec((err, feed) => {
-        console.log(feed)
+    Api.findOne({'host': apidetails.host}).exec((err, feed) => {
         if (err)
             console.log(err)
         else
