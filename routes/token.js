@@ -8,19 +8,20 @@ router.get('/awa', (req, res) => {
 });
 
 router.post('/token',function(req,res){
+    console.log("awawawa:",req.body)
     var head =req.headers
     var body1 =req.body
-    let encodeing = body1.encodType;
+    //let encodeing = body1.encodType;
     let token =decode(body1.cs,body1.ck)
 
     var options = { 
-    method: body.methord,
-    url: body1.url,
+    method: 'POST',
+    url: 'http://172.17.0.2:8280/token',
     headers: {
        'cache-control': 'no-cache',
         Authorization: token },
     form: { 
-        grant_type: body1.grant_type,
+        grant_type: 'client_credentials',
         undefined: undefined } 
     }
 
@@ -35,6 +36,7 @@ router.post('/token',function(req,res){
 
 router.post('/token1',function(req,res){
     var head=req.headers
+    console.log("Body:",req.body)
     var str1=req.body.ck
     var str2=req.body.cs
     var str3=decode(str1,str2)
@@ -59,9 +61,11 @@ function decode(ck,cs){
     var str1 = ck;
     var str2 = cs;
     var str3 = str1+":"+str2;
+    console.log("CK:",str1)
+    console.log("CK:",str2)
 // Encode the String
     var encodedString = Base64.encode(str3)
-    console.log(encodedString); // aGVsbG86d29ybGQhPyQqJigpJy09QH4=
+    console.log("Encoded:",encodedString);
     return  "Basic "+encodedString;
 }
 
