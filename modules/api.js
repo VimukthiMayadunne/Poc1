@@ -24,6 +24,9 @@ let ApiSchema = new Schema({
         paths: {
             type: Object
         },
+        securityDefinitions:{
+            type:Object
+        },
         'x-customAuth': {
             name:{
                 type:String

@@ -198,10 +198,10 @@ app.post('/token1',function(req,res){
     var str3=decode(str1,str2)
     var options = { method: 'POST',
     url: 'http://172.17.0.2:8280/token',
-    headers: 
-    { //'Postman-Token': '48f678cf-3db9-493d-9490-815de5c76882',
-      'cache-control': 'no-cache',
-    Authorization: str3 },
+    headers: { 
+    'cache-control': 'no-cache',
+    Authorization: str3 
+    },
     form: { grant_type: "client_credentials" } }
 
     request(options, function (error, response, body) {
