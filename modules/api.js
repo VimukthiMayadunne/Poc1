@@ -4,54 +4,66 @@ const Schema =mongoose.Schema;
 
 let ApiSchema = new Schema({
         swagger: {
-            type: Number,
+            type: Number
         },
         info: {
-            type: Object,
+            type: Object
         },
         host:{
-            type: String,
+            type: String
         },
         basePath: {
-            type: String,
+            type: String
         },
         tags: {
-            type: [Object],
+            type: [Object]
         },
         schemes:{
-            type: [String],
+            type: [String]
         },
         paths: {
-            type: Object,
+            type: Object
         },
         'x-customAuth': {
             name:{
                 type:String
-            } ,// "WSO2 APIM getway Acsess gearator"
-            grantType:{
-                type:String
-            }, // client_credentias
-            parameters:[{
-                name:{
+            },
+            details : [
+              {
+                grantType:{
                     type:String
-                }, // clientKey
-                in:{
+                },
+                methord: {
                     type:String
-                }, // body
-                required:{
-                    type:Boolean
-                }, //true
-                type:{
+                },
+                parameters: [
+                  {
+                    name :{
+                        type:String
+                    } ,
+                    in:{
+                        type:String
+                    } ,
+                    required :{
+                        type:Boolean
+                    } ,
+                    type:{
+                        type : String    
+                    },
+                    description:{
+                        type : String
+                    } 
+                  }],
+                url:{
                     type:String
-                }, 
-            }],
-            url:{
-                type: String
-            }, //http://172.17.0.2:8280/token
-            description:{
-                type: String 
-            }// "Genarates Accses token from client credentials to acsess data"
-      },
+                },
+                encodingType:{
+                    type:String
+                },
+                description:{
+                    type:String
+                }
+        }]}
     });
 
 const Api =mongoose.model('api', ApiSchema);

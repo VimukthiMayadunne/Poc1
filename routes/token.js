@@ -8,12 +8,8 @@ router.get('/awa', (req, res) => {
 });
 
 router.post('/token',function(req,res){
-    console.log("awawawa:",req.body)
-    var head =req.headers
     var body1 =req.body
-    //let encodeing = body1.encodType;
-    let token =decode(body1.cs,body1.ck)
-
+    let token =decode(body1.ck,body1.cs)
     var options = { 
     method: 'POST',
     url: 'http://172.17.0.2:8280/token',
@@ -21,7 +17,9 @@ router.post('/token',function(req,res){
        'cache-control': 'no-cache',
         Authorization: token },
     form: { 
-        grant_type: 'client_credentials',
+        grant_type: body1.grantType,
+        username:body1.username,
+        password:body1.password,
         undefined: undefined } 
     }
 
