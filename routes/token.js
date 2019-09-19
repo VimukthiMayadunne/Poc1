@@ -54,6 +54,13 @@ router.post('/token1',function(req,res){
     })
 })
 
+
+router.post('/form',function(req,res){
+    console.log(req.body)
+    res.status(400).send('Failed to create new record');
+    });
+
+
 function decode(ck,cs){
     console.log("Fcalled")
     var str1 = ck;

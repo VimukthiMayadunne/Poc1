@@ -31,12 +31,24 @@ let ApiSchema = new Schema({
             name:{
                 type:String
             },
+            url:{
+                type:String
+            },
+            encodingType:{
+                type:String
+            },
+            description:{
+                type:String
+            },
             details : [
               {
                 grantType:{
                     type:String
                 },
                 methord: {
+                    type:String
+                },
+                description:{
                     type:String
                 },
                 parameters: [
@@ -57,15 +69,6 @@ let ApiSchema = new Schema({
                         type : String
                     } 
                   }],
-                url:{
-                    type:String
-                },
-                encodingType:{
-                    type:String
-                },
-                description:{
-                    type:String
-                }
         }]}
     });
 
